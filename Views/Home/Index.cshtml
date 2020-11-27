@@ -1,0 +1,192 @@
+﻿@{ 
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login V1</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="~/tema/images/icons/favicon.ico" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/tema/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/tema/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/tema/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/tema/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/tema/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/tema/css/util.css">
+    <link rel="stylesheet" type="text/css" href="~/tema/css/main.css">
+    <!--===============================================================================================-->
+</head>
+<body>
+
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <div class="login100-pic js-tilt" data-tilt>
+                    <img src="~/tema/images/img-01.png" alt="IMG">
+                </div>
+
+                <form id="form_login" class="login100-form validate-form">
+                    <span class="login100-form-title">
+                        Login
+                    </span>
+
+                    <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+                        <input class="input100" type="text" name="email" id="email" placeholder="Email">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                        </span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Password is required">
+                        <input class="input100" type="password" name="pass" id="senha" placeholder="Password">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-lock" aria-hidden="true"></i>
+                        </span>
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <button type="button" onclick="fazerLogin()" class="login100-form-btn">
+                            Login
+                        </button>
+                    </div>
+
+
+                    <div class="text-center p-t-136">
+                        <a class="txt2" href="javascript:criarConta()">
+                            Crie sua conta!
+                            <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </form>
+
+                <form id="form_registrar" class="login100-form validate-form" hidden>
+                    <span class="login100-form-title">
+                        Registrar-se
+                    </span>
+
+                    <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+                        <input class="input100" type="text" name="email" id="registrar_email" placeholder="Email">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                        </span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Password is required">
+                        <input class="input100" type="password" name="pass" id="registrar_senha" placeholder="Password">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-lock" aria-hidden="true"></i>
+                        </span>
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <button type="button" onclick="Registrar()" class="login100-form-btn">
+                            Salvar
+                        </button>
+                    </div>
+
+
+                    <div class="text-center p-t-136">
+                        <a class="txt2" href="javascript:logar()">
+                            Já possui uma conta? Faça login.
+                            <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--===============================================================================================-->
+    <script src="~/tema/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/tema/vendor/bootstrap/js/popper.js"></script>
+    <script src="~/tema/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/tema/vendor/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/tema/vendor/tilt/tilt.jquery.min.js"></script>
+
+    <script>
+
+        var baseUrl = '@string.Format("{0}://{1}{2}", Context.Request.Scheme, Context.Request.Host.Value , Url.Content("~/"))';
+
+        window.onload = function () {
+
+
+
+        };
+
+        function logar() {
+
+            $("#form_registrar").prop("hidden", true);
+            $("#form_login").prop("hidden", false);            
+        };
+
+        function criarConta() {
+
+            $("#form_login").prop("hidden", true);
+            $("#form_registrar").prop("hidden", false);
+        };
+
+        function fazerLogin() {
+
+            var email = $("#email").val();
+            var senha = $("#senha").val();
+
+            $.ajax({
+                dataType: 'json',
+                url: baseUrl + 'login/logarUsuario',
+                type: 'post',
+                data: { 'email': email, 'senha': senha },
+                success: function (res) {
+
+                    if (res == true) {
+
+                        document.location.href = baseUrl + "Home/Privacy";
+                    }
+                    else
+                        alert("Erro");
+                }
+            });
+        };
+
+        function Registrar() {
+
+            var email = $("#registrar_email").val();
+            var senha = $("#registrar_senha").val();
+
+            $.ajax({
+                dataType: 'json',
+                url: baseUrl + 'login/registrarUsuario',
+                type: 'post',
+                data: { 'email': email, 'senha': senha },
+                success: function (res) {
+
+                    alert("Sucesso");
+                }
+            });
+        };
+
+        $('.js-tilt').tilt({
+            scale: 1.1
+        });
+
+    </script>
+    <!--===============================================================================================-->
+    <script src="~/tema/js/main.js"></script>
+
+</body>
+</html>
